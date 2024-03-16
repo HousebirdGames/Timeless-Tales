@@ -1,0 +1,820 @@
+/*Timeless Tales is a retro text adventure created and published by Felix T. Vogel in 2023*/
+
+:root {
+    --font: #00c510;
+    --background: #0e140a;
+    --warning: rgb(158, 54, 54);
+    --none: rgb(255, 255, 255, 0);
+
+    --borderRadius: 0.4em;
+    --borderRadiusButtons: 0.4em;
+    --fontFamily: 'Cormorant Infant Regular', sans-serif;
+    --boxShadow: 0px 0px 0.54em var(--darker);
+    --fontSize: 1.8em;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant Regular';
+    src: url('fonts/VT323/VT323-Regular.ttf');
+    font-display: swap;
+}
+
+/* Set the width and height of the scrollbar */
+::-webkit-scrollbar {
+    width: 1em;
+    border: none;
+}
+
+/* Set the background color of the scrollbar track */
+::-webkit-scrollbar-track {
+    background-color: #0e1f03;
+    background-image: none;
+}
+
+/* Set the background color of the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    border: none;
+    background-color: #00c51060;
+    background-image: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    border: none;
+    background-color: #00c510a1;
+    background-image: none;
+}
+
+::-webkit-scrollbar-thumb:active {
+    border: none;
+    background-color: var(--font);
+    background-image: none;
+}
+
+/*CSS Normalize*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    background-color: var(--background);
+    background-image: none;
+    color: var(--font);
+    font-family: var(--fontFamily);
+    font-size: var(--fontSize);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 4em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+    padding-top: 0.2em;
+}
+
+h1 {
+    font-weight: bold;
+    padding-top: 1em;
+}
+
+strong {
+    font-weight: bold;
+}
+
+ul {
+    list-style: square;
+    list-style-position: outside;
+    padding-left: 1em;
+}
+
+li {
+    text-align: left;
+    margin-top: 0.5em;
+}
+
+li::marker {
+    color: var(--font);
+}
+
+#game {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 50em;
+    background-color: none;
+    background-image: none;
+    border: none;
+}
+
+#game-content {}
+
+#choiceContainer {
+    padding-top: 0.2em;
+    flex-grow: 1;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0;
+    padding-bottom: 0.2em;
+    min-height: 0;
+}
+
+#left,
+#center,
+#right {
+    min-height: none;
+    padding: 0em;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    border-left: 4px dashed var(--font);
+}
+
+#left,
+#right {}
+
+#inventory,
+#equipment,
+#characterInfo,
+#enemyInfo {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.logHeading {
+    background-image: none;
+    background-color: var(--background);
+    border-bottom: 4px dashed var(--font);
+    height: 1.2em;
+    padding: 0;
+    padding-top: 0.2em;
+}
+
+#log {}
+
+#logListContainer {
+    min-height: 14.4em;
+}
+
+#logList {
+    margin: 0;
+    padding: 0;
+}
+
+#logList li {
+    line-height: 1em;
+}
+
+#logList li:not(:last-child) {
+    margin-bottom: 0em;
+}
+
+.box {
+    padding: 0em;
+    border: none;
+    background-color: var(--none);
+    background-image: none;
+    padding: 0em;
+    line-height: 1em;
+}
+
+.box.outset {
+    border: none;
+}
+
+#menu .popup-content .menu {
+    padding-left: unset;
+}
+
+#menu .popup-content h2 {
+    margin-bottom: 1rem;
+}
+
+#menu .popup-content br {
+    display: none;
+}
+
+#companionName {
+    margin-bottom: 1rem;
+}
+
+#companionCost {
+    text-align: left;
+}
+
+#hireCompanion {
+    width: 100%;
+}
+
+button {
+    font-size: 1em;
+    background-color: var(--none);
+    background-image: none;
+    font-weight: normal;
+    border: none;
+    text-decoration: none;
+    margin: 0em;
+    text-align: left;
+    padding: 0.2em;
+    padding-left: 0;
+}
+
+button:enabled:hover {
+    background-color: var(--font);
+    color: var(--background);
+    border: none;
+    background-image: none;
+}
+
+button:enabled:active {
+    background-color: var(--none);
+    border: none;
+    color: var(--font);
+}
+
+button:disabled {
+    opacity: 0.2;
+}
+
+button:enabled:not(:hover):not(:active) {}
+
+button.menu {
+    margin: 0;
+}
+
+button.closePopup {
+    width: 100%;
+}
+
+button.updateVersionButton {
+    color: #00c51071;
+    margin-right: 1.5rem;
+    border: none;
+}
+
+button.updateVersionButton {
+    margin-right: 1.5rem;
+}
+
+#inventory button {
+    padding-left: 0;
+}
+
+input {
+    border: none;
+    border-bottom: 4px dashed var(--font);
+    border-right: 4px dashed var(--font);
+    text-align: left;
+    background-color: var(--none);
+    font-size: 1em;
+    padding: 0em;
+    width: auto;
+}
+
+input::placeholder {}
+
+#menu h2 {
+    padding: 0em;
+}
+
+.popup {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.popup-content {
+    border: 1px solid var(--font);
+    background-color: rgba(0, 0, 0, 0.64);
+    background-image: none;
+    box-shadow: 0 0 1em 0 #00c51085;
+    text-align: left;
+}
+
+.show {}
+
+.popup-content.trade {}
+
+.trade-container {
+    text-align: left;
+    border: 4px solid var(--font);
+}
+
+.trade-container table {}
+
+.trade-container th {
+    background-color: var(--none);
+    border: none;
+    border-bottom: 4px dashed var(--font);
+    border-left: 4px dashed var(--font);
+    text-align: left;
+    min-width: 3.2em;
+}
+
+.trade-container th:hover:not(.defaultCursor) {
+    background-color: var(--font);
+    color: var(--background);
+}
+
+.trade-container td,
+tr {}
+
+.trade-container td {
+    border-left: 4px dashed var(--font);
+}
+
+.trade-container button {}
+
+td {
+    background: var(--none);
+}
+
+@media screen and (max-width: 1400px) {
+
+    body {
+        font-size: 1.4rem;
+        padding: 1rem;
+    }
+
+    #left,
+    #center,
+    #right {
+        padding: 4px;
+    }
+
+    .trade-container table {
+        font-size: 1rem;
+    }
+
+    .trade-container td {
+        border-left: 2px dashed var(--font);
+    }
+
+    .trade-container th {
+        border-bottom: 2px dashed var(--font);
+        border-left: 2px dashed var(--font);
+    }
+
+    #choiceContainer {
+        padding-bottom: 0;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    h1 {
+        width: 100%;
+        padding-left: 1em;
+        text-align: left;
+    }
+
+    body {
+        padding: 0em;
+        font-size: 1.4em;
+    }
+
+    #game-content {
+        flex-wrap: nowrap;
+    }
+
+    #left,
+    #center,
+    #right {
+        padding-right: 0;
+        margin: 0;
+        padding-top: 0.4em;
+        border-top: 4px dashed var(--font);
+    }
+
+    #left {}
+
+    #right {}
+
+    #center {}
+
+    .logHeading {
+        border-bottom: 4px solid var(--font);
+        height: 1.5em;
+    }
+
+    #choiceContainer {
+        justify-content: flex-start;
+        border-left: 4px dashed var(--font);
+        box-sizing: border-box;
+        padding-top: 0.2em;
+    }
+
+    button {
+        border-right: 4px dashed var(--font);
+        padding-left: 0.4em;
+    }
+
+    button:enabled:hover {
+        border-right: 4px dashed var(--none);
+    }
+
+    #menuButton {
+        padding-left: 0;
+        border-left: none;
+    }
+
+    button.menu,
+    button.closePopup,
+    #menu h2 {
+        padding: 0.2em 0 0.2em 0;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .inputDiv {
+        flex-wrap: wrap;
+    }
+}
+
+.card {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 80px;
+    margin: 8px;
+    perspective: 1000px;
+    cursor: pointer;
+    font-size: 2em;
+}
+
+.card-face {
+    background-image: none;
+}
+
+.card-back {
+    background-color: var(--font);
+    background-image: none;
+    border: 4px dashed var(--font);
+    border-radius: 0em;
+}
+
+.card-front {
+    background-color: var(--background);
+    border-radius: 0em;
+    border: 4px dashed var(--font);
+    font-weight: bold;
+    transform: rotateY(180deg);
+}
+
+@media screen and (max-width: 1000px) {
+    .gameSelectionButtons button {
+        width: 100%;
+    }
+
+    .card {
+        width: 45px;
+        height: 90px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .card {
+        width: 30px;
+        height: 60px;
+    }
+}
+
+button.close-button,
+button.restart-button {
+    width: 100%;
+}
+
+footer p {
+    opacity: 0.4;
+}
+
+footer a {
+    opacity: 0.4;
+    font-weight: normal;
+}
+
+.clickable-text:hover {
+    color: var(--font);
+    font-weight: bold;
+}
+
+.startTenCards {
+    border: 4px dashed var(--font);
+    background-image: none;
+    padding: 2em;
+}
+
+input[type=range] {
+    margin-top: 0.2em;
+    width: 100%;
+    height: 1em;
+    padding: 0em;
+    background-image: none;
+    appearance: none;
+}
+
+/* Webkit-based browsers (e.g., Chrome, Safari) */
+input[type=range]::-webkit-slider-runnable-track {
+    border: none;
+    background-color: var(--none);
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 4px solid var(--font);
+    background-color: var(--background);
+    background-image: none;
+    cursor: pointer;
+    height: 1em;
+    width: 0.8em;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    border: 4px solid var(--font);
+    background-image: none;
+    background-color: #00c51069;
+}
+
+input[type=range]::-webkit-slider-thumb:active {
+    background-color: var(--font);
+    border: 4px solid var(--font);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background-image: transparent;
+}
+
+/* Mozilla-based browsers (e.g., Firefox) */
+input[type=range]::-moz-range-progress {
+    background-color: transparent;
+}
+
+input[type=range]::-moz-range-track {
+    background-color: var(--none);
+    border: none;
+}
+
+input[type=range]::-moz-range-thumb {
+    border: none;
+    background-color: var(--none);
+    background-image: none;
+    cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb:hover {
+    background-image: none;
+}
+
+input[type=range]::-moz-range-thumb:active {
+    border: none;
+}
+
+/* Internet Explorer */
+input[type=range]::-ms-track {
+    background-color: var(--none);
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background-color: var(--none);
+    background-image: none;
+}
+
+input[type=range]::-ms-fill-upper {
+    background-color: var(--none);
+}
+
+input[type=range]::-ms-thumb {
+    border: none;
+    background-color: var(--none);
+    background-image: none;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-thumb:hover {
+    background-image: none;
+}
+
+input[type=range]::-ms-thumb:active {
+    border: none;
+}
+
+.installButton,
+.installButton:hover {
+    right: 1rem;
+    transition: none;
+}
+
+@media screen and (max-width: 700px) {
+    h1 {
+        margin-top: 2.4rem;
+    }
+}
+
+.hideOnAncientStyle {
+    display: block;
+}
+
+.showOnAncientStyle {
+    display: none;
+}
+
+#logListContainer::before,
+#enemyInfo::before {
+    display: none;
+}
+
+.bigImage {
+    border: 1px solid var(--font);
+}
+
+.bigImageWrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0rem 0rem 1rem var(--font);
+    pointer-events: none;
+}
+
+.glitch {
+    animation: glitch 1s 1;
+}
+
+@keyframes glitch {
+    0% {
+        transform: none;
+        opacity: 1;
+    }
+
+    2% {
+        transform: translate(2px, 0px);
+        opacity: 0.8;
+    }
+
+    95% {
+        transform: translate(2px, 0px);
+        opacity: 0.8;
+    }
+
+    98% {
+        transform: translate(-2px, 0px);
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: none;
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: none;
+}
+
+@keyframes afterglow {
+    0% {
+        color: white;
+    }
+
+    100% {
+        color: var(--font);
+    }
+}
+
+.afterglow {
+    animation: afterglow 0.1s ease-out;
+}

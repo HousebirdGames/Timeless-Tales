@@ -1,0 +1,23 @@
+{
+    "name": "Timeless Tales | Retro Text Adventure",
+    "short_name": "Timeless Tales",
+    "description": "Timeless Tales is a retro fantasy text adventure that is fully playable in browsers. Timeless Tales was created and published by Felix T. Vogel in 2023.",
+    "start_url": "/timeless-tales/index.html",
+    "display": "fullscreen",
+    "background_color": "#2b1804",
+    "theme_color": "#2b1804",
+    "icons": [
+        {
+            "src": "/timeless-tales/img/TimelessTalesLogo2Border.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/timeless-tales/img/TimelessTalesLogo2Border.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

@@ -1,0 +1,698 @@
+/*Timeless Tales is a retro text adventure created and published by Felix T. Vogel in 2023*/
+
+:root {
+    --font: #ffffff;
+    --background: #222c42;
+    --background-highlight: #364464;
+    --background-secondary: #5b6a88;
+    --background-secondary-highlight: #7a8caf;
+    --warning: rgb(158, 54, 54);
+    --none: rgb(255, 255, 255, 0);
+
+    --border: 0.2em solid var(--background-highlight);
+    --borderRadius: 0.4em;
+    --borderRadiusButtons: 0.4em;
+    --fontFamily: 'Quicksand', sans-serif;
+    --boxShadow: 0px 0px 0.54em var(--darker);
+    --fontSize: 1.2em;
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 400;
+    src: url('fonts/Quicksand/quicksand-v30-latin-ext_latin-regular.ttf') format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Quicksand';
+    font-style: normal;
+    font-weight: 700;
+    src: url('fonts/Quicksand/quicksand-v30-latin-ext_latin-700.ttf') format('truetype');
+    font-display: swap;
+}
+
+/* Set the width and height of the scrollbar */
+::-webkit-scrollbar {
+    width: 1em;
+    border: none;
+}
+
+/* Set the background color of the scrollbar track */
+::-webkit-scrollbar-track {
+    background-color: var(--background-highlight);
+    background-image: none;
+}
+
+/* Set the background color of the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    border: 0.2em solid var(--background-highlight);
+    border-right: none;
+    background-color: rgba(255, 255, 255, 0.4);
+    background-image: none;
+    border-radius: 1em;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    border: 0.2em solid var(--background-highlight);
+    border-right: none;
+    background-color: var(--font);
+    background-image: none;
+    border-radius: 1em;
+}
+
+::-webkit-scrollbar-thumb:active {
+    border: 0.2em solid var(--background-highlight);
+    border-right: none;
+    background-color: var(--font);
+    background-image: none;
+    border-radius: 1em;
+}
+
+/*CSS Normalize*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    background-color: var(--background);
+    background-image: none;
+    color: var(--font);
+    font-family: var(--fontFamily);
+    font-size: var(--fontSize);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 4em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
+}
+
+strong {
+    font-weight: bold;
+}
+
+ul {
+    list-style: disc;
+    list-style-position: outside;
+    padding-left: 1em;
+}
+
+li {
+    text-align: left;
+    margin-top: 0.5em;
+}
+
+li::marker {
+    color: var(--font);
+}
+
+#game {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 50em;
+    background-color: var(--background);
+    background-image: none;
+    border: 0.4em dotted var(--background-highlight);
+    padding-bottom: 1rem;
+}
+
+#game-content {
+    display: flex;
+}
+
+#choiceContainer {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    padding-bottom: 0.4em;
+}
+
+#left,
+#center,
+#right {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+    min-height: 20em;
+}
+
+#left,
+#right {
+    max-width: 12em;
+}
+
+@media screen and (max-width: 1150px) {
+
+    body {
+        font-size: 1rem;
+        padding: 2rem;
+    }
+
+    #game {
+        padding-bottom: 0;
+    }
+
+    #left,
+    #center,
+    #right {
+        padding: 4px;
+    }
+
+    .trade-container table {
+        font-size: 1rem;
+    }
+
+    #choiceContainer {
+        padding-bottom: 0;
+    }
+}
+
+@media screen and (max-width: 900px) {
+
+    body {
+        font-size: 1rem;
+    }
+
+    .trade-container table {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    body {
+        padding: 0.4em;
+        font-size: 1em;
+    }
+
+    #game-content {
+        flex-direction: column;
+        padding: 0.2em;
+    }
+
+    #left,
+    #center,
+    #right {
+        max-width: none;
+        min-height: 0em;
+        padding: 0.4em;
+    }
+
+    #left {}
+
+    #right {}
+
+    #center {}
+
+    #choiceContainer {}
+}
+
+#inventory,
+#equipment,
+#characterInfo,
+#enemyInfo {
+    margin-bottom: 20px;
+}
+
+.logHeading {
+    background-image: linear-gradient(to bottom, var(--background-secondary), rgba(255, 255, 255, 0));
+    position: absolute;
+    width: 100%;
+    padding: 0.4em;
+    z-index: 1;
+    text-shadow: 0 0 0.4rem var(--background);
+}
+
+#log {
+    flex-grow: 1;
+    overflow: auto;
+}
+
+#logListContainer {
+    position: relative;
+    height: 100%;
+    min-height: 12em;
+    overflow: hidden;
+}
+
+#logList {
+    list-style-type: none;
+    position: absolute;
+    bottom: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: 0.4em;
+    list-style-type: none;
+}
+
+#logList li:not(:last-child) {
+    margin-bottom: 0.4em;
+}
+
+.box {
+    border: var(--border);
+    background-color: var(--background-secondary);
+    background-image: none;
+    padding: 0.4em;
+    border-radius: var(--borderRadius);
+}
+
+.box.outset {
+    border: var(--border);
+}
+
+button {
+    font-family: var(--fontFamily);
+    color: var(--font);
+    font-size: 1em;
+    font-weight: bold;
+    border: var(--border);
+    border-radius: var(--borderRadiusButtons);
+    background-color: var(--background-secondary);
+    background-image: none;
+    padding: 0.4em;
+    margin: 0.2em;
+    cursor: pointer;
+    transition: 1s;
+    transition: opacity 0.2s;
+}
+
+button:enabled:hover {
+    background-color: var(--background-secondary-highlight);
+    background-image: none;
+    transition: 0.2s;
+    border: var(--border);
+}
+
+button:enabled:active {
+    position: relative;
+    background-color: #95a9cf;
+    border: var(--border);
+    transition: 1s;
+    left: 0em;
+    top: 0em;
+}
+
+button:disabled {
+    opacity: 0.5;
+    transition: 0.4s;
+    cursor: default;
+}
+
+button:enabled:not(:hover):not(:active) {
+    transition: 1s;
+}
+
+button.menu {
+    width: 100%;
+    margin: 0.2em 0 0.2em 0;
+}
+
+.popup {
+    background-color: rgba(0, 0, 0, 0.64);
+}
+
+.popup-content {
+    background-color: var(--background-secondary);
+    background-image: none;
+    border: var(--border);
+    border-radius: var(--borderRadius);
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.64);
+    text-align: center;
+}
+
+.show {
+    display: block;
+}
+
+#companionName {
+    margin-bottom: 1rem;
+}
+
+.popup-content.trade {
+    width: fit-content;
+    max-width: 100%;
+}
+
+.trade-container {
+    text-align: left;
+    border: var(--border);
+    border-radius: var(--borderRadius);
+}
+
+.trade-container table {
+    width: 100%;
+}
+
+.trade-container th {
+    background-color: var(--background-highlight);
+    border: 0.2em solid var(--background-highlight);
+    padding: 0.2em;
+}
+
+.trade-container th:hover:not(.defaultCursor) {
+    background-color: var(--font);
+    color: var(--background);
+}
+
+.trade-container td,
+tr {
+    border: 0.2em solid var(--background-highlight);
+    padding: 0 0.4em 0 0.4em;
+    vertical-align: middle;
+}
+
+.trade-container button {
+    padding: 0.1em;
+    width: 80%;
+}
+
+input {
+    background-color: var(--background-secondary);
+    color: var(--font);
+    font-size: 1em;
+    padding: 0.2em;
+    border: 0.15em inset var(--background);
+    font-family: var(--fontFamily);
+    font-weight: bold;
+    text-align: center;
+    outline: none;
+}
+
+input::placeholder {
+    color: var(--font);
+    font-size: 1em;
+}
+
+.startTenCards {
+    border: none;
+    background-image: none;
+    padding: 2em;
+}
+
+.card-number {
+    color: var(--background);
+}
+
+.card-face {
+    background-image: var(--background-image-2-hover);
+}
+
+.card-back {
+    background-color: var(--background-highlight);
+    background-image: none;
+    border: 4px solid rgba(255, 255, 255, 0.54);
+}
+
+.card-front {
+    background-color: #f3f3f3;
+    background-image: none;
+    border: 4px solid white;
+}
+
+input[type=range] {
+    margin-top: 0.2em;
+    width: 100%;
+    height: 1.5em;
+    padding: 0.2em;
+    background-image: none;
+    appearance: none;
+    border: var(--border);
+    border-radius: var(--borderRadius);
+}
+
+/* Webkit-based browsers (e.g., Chrome, Safari) */
+input[type=range]::-webkit-slider-runnable-track {
+    border: none;
+    background-color: var(--none);
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    border: var(--border);
+    background-color: var(--background);
+    background-image: none;
+    border-radius: 50%;
+    cursor: pointer;
+    height: 1.5em;
+    width: 1.5em;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    border: var(--border);
+    background-color: rgba(255, 255, 255, 0.4);
+    background-image: none;
+}
+
+input[type=range]::-webkit-slider-thumb:active {
+    background-color: var(--font);
+    border: var(--border);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background-image: transparent;
+}
+
+/* Mozilla-based browsers (e.g., Firefox) */
+input[type=range]::-moz-range-progress {
+    background-color: transparent;
+}
+
+input[type=range]::-moz-range-track {
+    background-color: var(--none);
+    border: none;
+}
+
+input[type=range]::-moz-range-thumb {
+    border: none;
+    background-color: var(--none);
+    background-image: none;
+    cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb:hover {
+    background-image: none;
+}
+
+input[type=range]::-moz-range-thumb:active {
+    border: none;
+}
+
+/* Internet Explorer */
+input[type=range]::-ms-track {
+    background-color: var(--none);
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background-color: var(--none);
+    background-image: none;
+}
+
+input[type=range]::-ms-fill-upper {
+    background-color: var(--none);
+}
+
+input[type=range]::-ms-thumb {
+    border: none;
+    background-color: var(--none);
+    background-image: none;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-thumb:hover {
+    background-image: none;
+}
+
+input[type=range]::-ms-thumb:active {
+    border: none;
+}
+
+input[type=text] {
+    border: var(--border);
+    border-radius: var(--borderRadius);
+}
+
+@media screen and (max-width: 370px) {
+    .inputDiv {
+        flex-wrap: wrap;
+    }
+}
+
+.hideOnAncientStyle {
+    display: block;
+}
+
+.showOnAncientStyle {
+    display: none;
+}
+
+.bigImage {
+    border: none;
+    border-radius: var(--borderRadius);
+}
+
+#logListContainer::before,
+#enemyInfo::before {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.2s ease-in;
+}
+
+@media screen and (max-width: 1150px) {
+    h1 {
+        margin-top: 3.4rem;
+    }
+}

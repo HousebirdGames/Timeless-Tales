@@ -1,0 +1,1314 @@
+/*Timeless Tales is a retro text adventure created and published by Felix T. Vogel in 2023*/
+
+:root {
+    --font: #2b1804;
+    --background: #2b1804;
+    --background-highlight: #a56928;
+    --background-secondary: #bda288;
+    --background-secondary-highlight: #ddc1a6;
+    --background-image: url('img/parchment_texture.png');
+    --background-image-2: url('img/parchment_texture_6.png');
+    --background-image-2-fade: url('img/parchment_texture_6_fade.png');
+    --background-image-2-hover: url('img/parchment_texture_2.png');
+    --background-image-3: url('img/parchment_texture_5.png');
+    --locations-image: none;
+    --enemy-image: none;
+    --warning: rgb(158, 54, 54);
+    --none: rgb(255, 255, 255, 0);
+
+    --borderRadius: 0.4em;
+    --borderRadiusButtons: 0.4em;
+    --fontFamily: 'Cormorant Infant Regular', sans-serif;
+    --boxShadow: 0px 0px 0.54em var(--darker);
+    --fontSize: 1.6rem;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant Regular';
+    src: url('fonts/CormoranInfant/CormorantInfant-Regular.ttf');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant Bold';
+    src: url('fonts/CormoranInfant/CormorantInfant-Bold.ttf');
+    font-weight: bold;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Cormorant Infant Italic';
+    src: url('fonts/CormoranInfant/CormorantInfant-Italic.ttf');
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Set the width and height of the scrollbar */
+::-webkit-scrollbar {
+    width: 1em;
+    border: 0.2em inset var(--background);
+}
+
+/* Set the background color of the scrollbar track */
+::-webkit-scrollbar-track {
+    background-color: var(--background-secondary);
+    background-image: var(--background-image-2-hover);
+}
+
+/* Set the background color of the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    border: 0.2em outset var(--background-highlight);
+    background-color: var(--background);
+    background-image: var(--background-image-2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    border: 0.2em outset #d68e41;
+    background-color: var(--background-secondary-highlight);
+    background-image: var(--background-image-2-hover);
+}
+
+::-webkit-scrollbar-thumb:active {
+    border: 0.2em outset #f7a54d;
+    background-color: var(--background-secondary-highlight);
+    background-image: var(--background-image-2-hover);
+}
+
+/* Set the color of the scrollbar arrow buttons */
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+/* Set the color and style of the scrollbar corner */
+::-webkit-scrollbar-corner {
+    border: none;
+}
+
+/*CSS Normalize*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol,
+ul {
+    list-style: none;
+}
+
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: #3d2307;
+    background-image: var(--background-image);
+    color: var(--font);
+    font-family: var(--fontFamily);
+    font-size: var(--fontSize);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 1em;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
+}
+
+.box h2 {
+    font-size: 2rem;
+    padding-bottom: 0.4rem;
+}
+
+h1.center,
+h2.center,
+h3.center,
+h4.center,
+h5.center,
+h6.center {
+    text-align: center;
+}
+
+p {
+    text-align: justify;
+    line-height: 1.2em;
+}
+
+p.center {
+    text-align: center;
+}
+
+strong {
+    font-weight: bold;
+}
+
+ul {
+    list-style: disc;
+    list-style-position: outside;
+    padding-left: 1em;
+}
+
+li {
+    text-align: left;
+    margin-top: 0.5em;
+}
+
+li::marker {
+    color: var(--background-highlight);
+}
+
+#game {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 50em;
+    background-color: var(--background);
+    background-image: var(--background-image-3);
+    border: 0.2em outset var(--background);
+    padding-bottom: 0.2em;
+}
+
+#game-content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#left,
+#center,
+#right {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+    min-height: 22em;
+    height: fit-content;
+}
+
+#center {
+    padding: 20px 00px;
+    height: unset;
+}
+
+#left,
+#right {
+    max-width: 12em;
+}
+
+#choiceContainer {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    order: 4;
+    justify-content: center;
+    padding-bottom: 0.4em;
+    width: 100%;
+}
+
+#inventory,
+#equipment,
+#characterInfo,
+#enemyInfo {
+    margin-bottom: 20px;
+}
+
+
+
+#logListContainer,
+#enemyInfo {
+    position: relative;
+    z-index: 1;
+}
+
+#logListContainer::before,
+#enemyInfo::before {
+    content: '';
+    position: absolute;
+    opacity: 0.1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: var(--location-image);
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+    transition: all 0.4s ease-out;
+}
+
+#logListContainer.fade-out-image::before,
+#enemyInfo.fade-out-image::before {
+    opacity: 0;
+}
+
+#enemyInfo::before {
+    background-image: var(--enemy-image);
+    transition: all 1s ease-out;
+    opacity: 0.24;
+}
+
+#logListContainer:hover::before,
+#enemyInfo:hover::before {
+    opacity: 0.54;
+    transition: all 1s ease-in-out;
+}
+
+#logListContainer:hover,
+#enemyInfo:hover {
+    cursor: pointer;
+    text-shadow: 0 0 0.1rem var(--background-secondary-highlight);
+    transition: all 0.4s ease-in-out;
+}
+
+.bigImageWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.bigImage {
+    display: block;
+    width: 100%;
+    max-height: 70vh;
+    border: 0.2em inset var(--background);
+    box-sizing: border-box;
+}
+
+.logHeading {
+    background-image: var(--background-image-2-fade);
+    background-size: contain;
+    position: absolute;
+    width: 100%;
+    height: 2em;
+    padding: 0.4em;
+    z-index: 1;
+}
+
+#log {
+    flex-grow: 1;
+    overflow: auto;
+    padding: 0;
+}
+
+#logListContainer {
+    position: relative;
+    height: 100%;
+    min-height: 12em;
+    overflow: hidden;
+}
+
+#logList {
+    list-style-type: none;
+    position: absolute;
+    bottom: 0;
+    max-width: 100%;
+    padding: 0.4em;
+    list-style-type: none;
+    font-weight: bold;
+}
+
+#logList li {
+    line-height: 1.2em;
+}
+
+#logList li:not(:last-child) {
+    margin-bottom: 0.2em;
+}
+
+@media screen and (max-width: 1150px) {
+
+    body {
+        font-size: 1.4rem;
+    }
+
+    .box h2 {
+        font-size: 1.6rem;
+        padding-bottom: 0.4rem;
+    }
+
+    #left,
+    #center,
+    #right {
+        padding: 10px;
+    }
+
+    #center {
+        padding: 10px 0;
+    }
+
+    #inventory,
+    #equipment,
+    #characterInfo,
+    #enemyInfo {
+        margin-bottom: 10px;
+    }
+
+    .trade-container table {
+        font-size: 1rem;
+    }
+
+    #choiceContainer {
+        padding-bottom: 0;
+    }
+}
+
+@media screen and (max-width: 900px) {
+
+    body {
+        font-size: 1rem;
+    }
+
+    .trade-container table {
+        font-size: 0.8rem;
+    }
+
+    .box h2 {
+        font-size: 1.2rem;
+        padding-bottom: 0.4rem;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    body {
+        padding: 0.64em;
+    }
+
+    #game {
+        padding-bottom: 1em;
+    }
+
+    #game-content {
+        flex-direction: column;
+    }
+
+    #left,
+    #center,
+    #right {
+        max-width: none;
+        min-height: 0em;
+        padding: 0.2em 0.4em 0.2em 0.4em;
+    }
+
+    #center {
+        padding-top: 0;
+    }
+
+    #left {
+        order: 4;
+    }
+
+    #logListContainer {
+        min-height: 30rem;
+    }
+
+    #right {
+        order: 1;
+        padding-top: 0.6rem;
+    }
+
+    #center {
+        order: 2;
+    }
+
+    #choiceContainer {
+        order: 3;
+        padding-bottom: 20px;
+    }
+
+    .save-prompt {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        transition: opacity 0.5s ease-out;
+    }
+
+    #enemyInfo::before {
+        background-size: contain;
+        background-position: right;
+        background-repeat: no-repeat;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #logListContainer {
+        min-height: 22rem;
+    }
+}
+
+.box {
+    border: 0.2em inset var(--background);
+    background-color: var(--background-secondary);
+    background-image: var(--background-image-2);
+    padding: 0.4em;
+    line-height: 1.2em;
+}
+
+.box.outset {
+    border: 0.2em outset var(--background);
+}
+
+button {
+    font-family: var(--fontFamily);
+    color: var(--font);
+    font-size: 0.8em;
+    font-weight: bold;
+    border: 0.2em outset var(--background);
+    background-color: var(--background-secondary);
+    background-image: var(--background-image-2);
+    padding: 0.4em;
+    margin: 0.2em;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+button:enabled:hover {
+    border: 0.2em outset var(--background-highlight);
+    background-color: var(--background-secondary-highlight);
+    background-image: var(--background-image-2-hover);
+}
+
+button:enabled:active {
+    position: relative;
+    border: 0.2em inset var(--background-highlight);
+    left: 0em;
+    top: 0em;
+}
+
+button:disabled {
+    opacity: 0.5;
+    transition: 0.4s;
+    cursor: default;
+}
+
+button:enabled:not(:hover):not(:active) {
+    transition: opacity 0.2s;
+}
+
+button.menu {
+    width: 100%;
+    margin: 0.2em 0 0.2em 0;
+}
+
+#menu .popup-content {
+    display: flex;
+    flex-direction: column;
+}
+
+#menu .popup-content .menu {
+    padding: 0.4rem 2rem;
+}
+
+#submitNameButton {
+    margin: 0;
+}
+
+.inputDiv {
+    display: flex;
+    gap: 0.4em;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.clickable-text {
+    cursor: pointer;
+    transition: 1s;
+}
+
+.clickable-text:hover {
+    color: var(--background-highlight);
+    transition: 0.2s;
+}
+
+#companionName {
+    margin-bottom: 0.4rem;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--none);
+    z-index: 1000;
+}
+
+.popup-content {
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background-secondary);
+    background-image: var(--background-image-2);
+    max-width: 90%;
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 1em;
+    border: 0.2em outset var(--background);
+    box-shadow: 0 0 0.4em 0 rgba(0, 0, 0, 1);
+    max-width: fit-content;
+    text-align: center;
+}
+
+#playerNameModal .popup-content {
+    max-width: fit-content;
+}
+
+@media screen and (max-height: 500px) {
+    .popup-content {
+        max-height: 60%;
+    }
+}
+
+.popup-content.big {
+    width: 90%;
+    max-width: 40em;
+}
+
+#patchNotesButtonsContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+ul {
+    line-height: 1.1;
+}
+
+#alertPopupContent {
+    line-height: 1.2em;
+    text-align: justify;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+.popup-content.trade {
+    width: fit-content;
+    max-width: 100%;
+}
+
+.trade-container {
+    text-align: left;
+    border: 0.2em inset var(--background);
+    box-shadow: inset 0 0 0.4em rgba(0, 0, 0, 0.4);
+    padding: 0.8em;
+    max-height: 14em;
+}
+
+.trade-container table {
+    width: 100%;
+}
+
+.trade-container th {
+    background-color: var(--background-highlight);
+    font-weight: bold;
+    border: 1px solid var(--background);
+    box-shadow: inset 0 0 0.2em rgba(0, 0, 0, 0.5);
+    padding: 0.2em;
+    text-align: center;
+    min-width: 3em;
+    cursor: pointer;
+}
+
+.trade-container th:hover:not(.defaultCursor) {
+    background-color: #c47d32;
+}
+
+.trade-container th.defaultCursor {
+    cursor: default;
+}
+
+.trade-container th.name {
+    min-width: 8em;
+}
+
+.trade-container td,
+tr {
+    border: 1px solid var(--background);
+    padding: 0.15em 0.2em 0.15em 0.2em;
+    vertical-align: middle;
+}
+
+td:first-child {
+    font-weight: 700;
+}
+
+td {
+    background: var(--background-secondary-highlight);
+}
+
+.trade-container button {
+    padding: 0.1em;
+    min-width: 5em;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media screen and (max-width: 768px) {
+    .trade-container {
+        box-shadow: inset 0 0 0.4em rgba(0, 0, 0, 0.8);
+    }
+
+    .trade-container table {
+        white-space: nowrap;
+    }
+
+    .popup-content.trade {
+        padding: 0.4em;
+    }
+
+    .trade-container {
+        max-height: 30em;
+    }
+}
+
+input {
+    background-color: var(--background-secondary);
+    color: var(--font);
+    font-size: 1em;
+    padding: 0.2em;
+    margin: -0.2em;
+    border: 0.2em inset var(--background);
+    font-family: var(--fontFamily);
+    font-weight: bold;
+    text-align: center;
+    outline: none;
+    max-width: 100%;
+}
+
+input[type=text] {
+    margin: 0;
+}
+
+input::placeholder {
+    color: var(--font);
+    font-size: 1em;
+}
+
+#gameSelection {
+    text-align: center;
+    font-weight: bold;
+}
+
+footer {
+    padding-top: 2em;
+    display: flex;
+    gap: 0.4em;
+    position: fixed;
+    bottom: 0.2em;
+}
+
+footer a {
+    color: var(--font);
+    opacity: 0.8;
+    font-weight: bold;
+    font-size: 0.8em;
+    text-decoration: none;
+}
+
+footer p {
+    color: var(--font);
+    opacity: 0.8;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+footer a:hover {
+    opacity: 1;
+}
+
+footer a.openAcknolegmentPopupButton {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 586px) {
+    input[type=range] {
+        width: unset;
+    }
+
+    .popup-content {
+        width: calc(100% - 40px);
+        max-width: 100%;
+        /*margin: 5% 20px;*/
+        box-sizing: border-box;
+    }
+
+    #menu .popup-content,
+    #stylePopup .popup-content {
+        width: fit-content;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .inputDiv {
+        flex-wrap: wrap;
+    }
+}
+
+.save-prompt {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    transition: opacity 0.5s ease-out;
+}
+
+.save-prompt.show {
+    display: block;
+    opacity: 1;
+}
+
+.startTenCards {
+    border: 0.2em outset var(--background);
+    background-image: var(--background-image-2);
+    padding: 2em;
+}
+
+#cardsPopup p,
+#cardsGame p {
+    text-align: center;
+    padding: 0.2em;
+}
+
+.cards-row {
+    padding-top: 0.4em;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.card {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 120px;
+    margin: 8px;
+    perspective: 1000px;
+    cursor: pointer;
+    font-size: 2em;
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    transition: transform 0.6s;
+    background-image: var(--background-image-2-hover);
+}
+
+.card-back {
+    background-color: rgb(143, 0, 0);
+    background-image: url(img/playing-card.jpg);
+    background-size: cover;
+    background-position: center;
+    margin: -4px;
+    border: 4px solid rgba(143, 0, 0, 1);
+    border-radius: 0.2em;
+}
+
+.card-front {
+    background-color: #f3f3f3;
+    border-radius: 0.2em;
+    margin: -4px;
+    border: 4px solid rgba(143, 0, 0, 0.6);
+    font-weight: bold;
+    transform: rotateY(180deg);
+}
+
+.card-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.card.flipped .card-front {
+    transform: rotateY(0);
+}
+
+.card.flipped .card-back {
+    transform: rotateY(-180deg);
+}
+
+@media screen and (max-width: 1000px) {
+    .card {
+        width: 45px;
+        height: 90px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .card {
+        width: 30px;
+        height: 64px;
+        margin: 6px;
+    }
+
+    .card-back {
+        border-width: 3px;
+    }
+
+    .card-front {
+        border-width: 3px;
+    }
+}
+
+input[type=range] {
+    margin-top: 0.4em;
+    width: 100%;
+    height: 1em;
+    padding: 0em;
+    background-image: var(--background-image-2-hover);
+    appearance: none;
+}
+
+/* Webkit-based browsers (e.g., Chrome, Safari) */
+input[type=range]::-webkit-slider-runnable-track {
+    border: none;
+    background-color: var(--none);
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0.2em outset var(--background);
+    background-color: var(--background);
+    background-image: var(--background-image-2);
+    cursor: pointer;
+    height: 1em;
+    width: 0.8em;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    background-image: var(--background-image-2-hover);
+}
+
+input[type=range]::-webkit-slider-thumb:active {
+    border: 0.2em inset var(--background);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background-image: transparent;
+}
+
+/* Mozilla-based browsers (e.g., Firefox) */
+input[type=range]::-moz-range-progress {
+    background-color: var(--background-highlight);
+}
+
+input[type=range]::-moz-range-track {
+    background-color: var(--none);
+    border: none;
+}
+
+input[type=range]::-moz-range-thumb {
+    border: 0.2em outset var(--background);
+    background-color: var(--background);
+    background-image: var(--background-image-2);
+    cursor: pointer;
+    height: 1em;
+    width: 0.8em;
+}
+
+input[type=range]::-moz-range-thumb:hover {
+    background-image: var(--background-image-2-hover);
+}
+
+input[type=range]::-moz-range-thumb:active {
+    border: 0.2em inset var(--background);
+}
+
+/* Internet Explorer */
+input[type=range]::-ms-track {
+    background-color: var(--none);
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background-color: var(--background-highlight);
+    background-image: none;
+}
+
+input[type=range]::-ms-fill-upper {
+    background-color: var(--none);
+}
+
+input[type=range]::-ms-thumb {
+    border: 0.2em outset var(--background);
+    background-color: var(--background);
+    background-image: var(--background-image-2);
+    cursor: pointer;
+    height: 1em;
+    width: 0.8em;
+}
+
+input[type=range]::-ms-thumb:hover {
+    background-image: var(--background-image-2-hover);
+}
+
+input[type=range]::-ms-thumb:active {
+    border: 0.2em inset var(--background);
+}
+
+.fullscreen-button {
+    opacity: 0.4;
+    position: fixed;
+    top: 0.4em;
+    left: 0.4em;
+    cursor: pointer;
+    z-index: 500;
+}
+
+.fullscreen-button:hover {
+    opacity: 1;
+    position: fixed;
+    top: 0.4em;
+    left: 0.4em;
+}
+
+.fullscreen-button:active {
+    opacity: 1;
+    position: fixed;
+    top: 0.4em;
+    left: 0.4em;
+}
+
+.fullscreen-button:enabled:active {
+    opacity: 1;
+    position: fixed;
+    left: unset;
+    top: 0.4em;
+    left: 0.4em;
+}
+
+.installButton {
+    display: none;
+    opacity: 0.4;
+    position: fixed;
+    top: 0.4em;
+    right: 0.4em;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.installButton:hover {
+    opacity: 1;
+    position: fixed;
+    top: 0.4em;
+    right: 0.4em;
+}
+
+.installButton:active {
+    opacity: 1;
+    position: fixed;
+    top: 0.4em;
+    right: 0.4em;
+}
+
+.installButton:enabled:active {
+    opacity: 1;
+    position: fixed;
+    left: unset;
+    top: 0.4em;
+    right: 0.4em;
+}
+
+@media screen and (max-width: 678px) {
+    .logo {
+        margin-top: 2.4rem;
+    }
+
+    .installButton,
+    .fullscreen-button {
+        opacity: 1;
+    }
+}
+
+.splash-screen.fade-out-splash #splash-image {
+    opacity: 1;
+    transform: scale(0.4);
+}
+
+.splash-screen {
+    position: fixed;
+    z-index: 99999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #242a3a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#splash-image {
+    max-width: 100%;
+    max-height: 100%;
+    opacity: 0;
+    transform: scale(0.3);
+    transition: opacity 2s ease-out, transform 4s ease-out;
+}
+
+.logo {
+    max-width: 100%;
+    width: auto;
+}
+
+.hideOnAncientStyle {
+    display: none;
+}
+
+.showOnAncientStyle {
+    display: block;
+}
+
+.logo {
+    max-width: 100%;
+    width: auto;
+}
+
+@media screen and (max-width: 600px) {
+    #splash-image {
+        transform: scale(0.7);
+    }
+
+    .splash-screen.fade-out-splash #splash-image {
+        transform: scale(0.8);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-in;
+}
+
+.fade-out {
+    animation: fadeOut 1s ease-in-out;
+}
+
+.fade-in-fast {
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.fade-out-fast {
+    animation: fadeOut 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes afterglow {
+    0% {
+        color: rgb(255, 174, 0);
+        text-shadow: 0 0 1em 0 rgb(255, 174, 0);
+    }
+
+    2% {
+        color: rgb(255, 145, 0);
+        text-shadow: 0 0 0.4em 0 rgb(255, 72, 0);
+    }
+
+    5% {
+        color: rgb(255, 72, 0);
+        text-shadow: 0 0 0em 0 white;
+    }
+
+    10% {
+        color: rgb(153, 23, 0);
+    }
+
+    100% {
+        color: var(--font);
+    }
+}
+
+.afterglow {
+    animation: afterglow 10s ease-out;
+}
+
+/*Loading Symbol*/
+.loadingSymbol {
+    border: 0.4em dashed white;
+    border-radius: 50%;
+    width: 2em;
+    height: 2em;
+    animation: spin 1.4s ease-in-out infinite;
+}
+
+.loadingSymbolWrap {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

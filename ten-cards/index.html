@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description"
+		content="Play the standalone version of the minigame Ten Cards from Timeless Tales, which was created and published by Felix T. Vogel in 2023.">
+	<title>Timeless Tales | Ten Cards</title>
+	<meta name="theme-color" content="#2b1804">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="icon" type="image/x-icon" href="/timeless-tales/img/TimelessTalesFavicon.png">
+	<link rel="stylesheet" href="/timeless-tales/style.css?v=2.0.6">
+	<link rel="stylesheet" href="/timeless-tales/style.css?v=2.0.6" id="secondary-style">
+</head>
+
+<body>
+	<div id="splash-screen" class="splash-screen">
+		<img id="splash-image" src="/timeless-tales/img/Housebird Games Logo Round With Name.png"
+			alt="Splash Image (Housebird Games Logo)" />
+		<div class="loadingSymbol"></div>
+	</div>
+
+	<h1>Timeless Tales | Ten Cards</h1>
+	<br>
+
+	<noscript>
+		<div
+			style="background-color: rgb(230, 212, 55); color: black; padding: 1em; font-family: Verdana; line-height: 2em;">
+			<strong>Warning:</strong>
+			JavaScript is not enabled in your browser. This website requires JavaScript to
+			function properly. Please enable JavaScript and refresh the page.
+		</div>
+		<br>
+
+		<style>
+			.splash-screen,
+			.fullscreen-button,
+			#cardsGame,
+			#cardsMode {
+				display: none;
+			}
+		</style>
+	</noscript>
+
+	<script type="module" src="../src/main.js?v=2.0.6"></script>
+
+	<div id="cardsGame" class="startTenCards noGlitch"></div>
+	<br>
+	<div id="cardsMode" class="box outset noGlitch">
+		<br>
+		<p id="gameSelection"></p>
+		<br>
+		<div class="gameSelectionButtons">
+			<button class="difficulty-button" data-difficulty="easy">Easy AI</button>
+			<button class="difficulty-button" data-difficulty="medium">Medium AI</button>
+			<button class="difficulty-button" data-difficulty="hard">Hard AI</button>
+			<button class="local-multiplayer-button">Local Multiplayer</button>
+		</div>
+	</div>
+
+	<button id="fullscreenButton" class="fullscreen-button">Toggle Fullscreen</button>
+
+	<footer class="hide">
+		<a href="https://stubenvogel.com/impressum/">Imprint</a>
+		<p>
+			|
+		</p>
+		<a href="https://housebird.games/privacy-policy/">Privacy Policy</a>
+	</footer>
+
+	<div id="cardsRulesPopup" class="popup keepOpen">
+		<div class="popup-content">
+			<h2>Rules</h2>
+			<br>
+			<p>In Ten Cards, two players take turns flipping one card at a time from a row containing cards numbered one
+				to five, arranged in random order. The number on each flipped card is added to the player's score.</p>
+			<br>
+			<p>The game concludes when all cards have been flipped, and the player with the highest score is declared
+				the winner.</p>
+			<br>
+			<button class="closePopup">Close</button>
+		</div>
+	</div>
+
+	<div id="menu" class="popup noGlitch">
+		<div class="popup-content noGlitch">
+			<h2>Menu</h2>
+			<br>
+			<button class="closePopup menu">Continue</button>
+			<a href="/timeless-tales/">
+				<button class="menu">Back to Timeless Tales</button>
+			</a>
+			<br>
+			<button id="changeStyleButton" class="menu">Change Style</button>
+			<button id="updateNotesButton" class="menu">Update Notes</button>
+			<button class="menu openAcknolegmentPopupButton">Manage Cookies & Storage</button>
+			<a href="https://stubenvogel.com/impressum/">
+				<button class="menu">Imprint</button>
+			</a>
+			<a href="https://housebird.games/privacy-policy/">
+				<button class="menu">Privacy Policy</button>
+			</a>
+			<a href="https://housebird.games">
+				<button class="menu">Visit housebird.games</button>
+			</a>
+		</div>
+	</div>
+
+	<div id="stylePopup" class="popup">
+		<div class="popup-content">
+			<h2>Select a style</h2>
+			<br>
+			<button class="style-button menu" data-style="style.css?v=2.0.6">Ancient</button>
+			<button class="style-button menu" data-style="style-retro.css?v=2.0.6">Retro</button>
+			<button class="style-button menu" data-style="style-modern.css?v=2.0.6">Modern</button>
+			<br>
+			<br>
+			<button class="closePopup">Close</button>
+		</div>
+	</div>
+
+	<div id="newGamePopup" class="popup">
+		<div class="popup-content">
+			<h2>Are you sure? All of your progress will be deleted.</h2>
+			<br>
+			<button id="resetButton" class="menu">Confirm</button>
+			<button class="closePopup menu">Cancel</button>
+		</div>
+	</div>
+
+	<div id="updatePopup" class="popup">
+		<div class="popup-content">
+			<div id="patchNotesButtonsContainer"></div>
+			<br>
+			<h2>Update Notes</h2>
+			<br>
+			<div id="updateContent"></div>
+			<br>
+			<p>
+				<strong>Important Note:</strong>
+				Please read what cookies & data will be stored. You will find the
+				information by clicking the button below. There you can delete the data this site stores.
+			</p>
+			<br>
+			<button class="menu openAcknolegmentPopupButton">Cookies & Storage</button>
+			<button id="updateConfirm" class="menu">Confirm</button>
+		</div>
+	</div>
+
+	<div id="storageAcknowledgementPopup" class="popup noGlitch">
+		<div class="popup-content big noGlitch">
+			<h1 class="noGlitch">Welcome to Timeless Tales!</h1>
+			<br>
+			<p class="noGlitch">Welcome! This website saves your game inside of your browsers local storage as soon you
+				click on "Enter
+				your character's name". It also uses a cookie to save your chosen style, if you change it via the menu.
+				The page also saves a cookie as soon as you press "I understand and agree" to hide this message the next
+				time you visit or reload this page. Another cookie is used to remember on which version of the site you
+				clicked "Confirm" on the Update Notes so that they are not shown on every page load. All of this is done
+				to provide the functionality of this site. If
+				you close this popup without clicking "I understand and agree", nothing will be stored. Additionally the
+				site saves to your browsers session storage if the splash screen was already shown. The session storage
+				will be deleted once you close the site.</p>
+			<br>
+			<p>Please also note that this game is experimental and will likely change and is not guaranteed to stay
+				online or to even work in the way you expect. You may need to delete your cache for future updates to
+				take effect.</p>
+			<br>
+			<button id="storageAcknowledgementButton" class="closePopup menu noGlitch">I understand and agree</button>
+			<button id="clearButton" class="menu noGlitch">Delete cookies set by this site & the savegame from local
+				storage</button>
+		</div>
+	</div>
+
+	<div id="alertPopup" class="popup">
+		<div class="popup-content">
+			<h2 id="alertPopupContent"></h2>
+			<br>
+			<button class="closePopup menu">Close</button>
+		</div>
+	</div>
+</body>
+
+</html>

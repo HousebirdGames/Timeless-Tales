@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description"
+		content="Timeless Tales is a retro fantasy text adventure that is fully playable in browsers. It was created and published by Felix T. Vogel in 2023.">
+	<title>Timeless Tales | Retro Text Adventure</title>
+	<link rel="icon" type="image/x-icon" href="img/TimelessTalesFavicon.png">
+	<meta name="theme-color" content="#2b1804">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<link rel="manifest" href="manifest.json?v=2.0.6">
+	<link rel="stylesheet" href="style.css?v=2.0.6">
+	<link rel="stylesheet" href="style.css?v=2.0.6" id="secondary-style">
+</head>
+
+<body>
+	<div id="splash-screen" class="splash-screen">
+		<img id="splash-image" src="img/Housebird Games Logo Round With Name.png"
+			alt="Splash Image (Housebird Games Logo)" />
+		<div class="loadingSymbol"></div>
+	</div>
+
+	<h1 class="hideOnAncientStyle">Timeless Tales</h1>
+	<img src="img/Timeless Tales Logo Transparent Small.png" alt="Timeless Tales Logo" class="logo showOnAncientStyle">
+	<br>
+
+	<noscript>
+		<div
+			style="background-color: rgb(230, 212, 55); color: black; padding: 1em; font-family: Verdana; line-height: 2em;">
+			<strong>Warning:</strong>
+			JavaScript is not enabled in your browser. This website requires JavaScript to
+			function properly. Please enable JavaScript and refresh the page.
+		</div>
+		<br>
+
+		<style>
+			.splash-screen,
+			.fullscreen-button,
+			#game {
+				display: none;
+			}
+		</style>
+	</noscript>
+
+	<script type="module" src="src/main.js?v=2.0.6" defer></script>
+	<div id="game">
+		<div id="game-content">
+			<div id="left">
+				<div id="equipment" class="box"></div>
+				<button id="inventoryButton" class="menu">Inventory</button>
+				<button id="menuButton" class="menu">Menu</button>
+			</div>
+			<div id="center">
+				<div id="log" class="box">
+					<div id="logListContainer">
+						<h2 id="logHeading" class="logHeading clickable-text">Your Adventure</h2>
+						<br>
+						<ul id="logList"></ul>
+					</div>
+				</div>
+			</div>
+			<div id="right">
+				<div id="characterInfo" class="box">
+					<h2>Player Stats</h2>
+					<div id="characterName"></div>
+					<div id="characterClass"></div>
+					<div id="characterHealth"></div>
+					<div id="characterAttack"></div>
+					<div id="characterDefense"></div>
+					<div id="characterWeight"></div>
+					<div id="characterEquipmentValue"></div>
+					<div id="characterGold"></div>
+				</div>
+				<div id="enemyInfo" class="box"></div>
+			</div>
+			<div id="choiceContainer"></div>
+		</div>
+	</div>
+	<div id="savePrompt" class="save-prompt"></div>
+	<button id="fullscreenButton" class="fullscreen-button">Toggle Fullscreen</button>
+	<button id="installButton" class="installButton">Download Game</button>
+
+	<footer class="hide">
+		<a href="https://stubenvogel.com/impressum/">Imprint</a>
+		<p>
+			|
+		</p>
+		<a href="https://housebird.games/privacy-policy/">Privacy Policy</a>
+	</footer>
+
+	<div id="playerNameModal" class="popup">
+		<div class="popup-content">
+			<h2>Name your character</h2>
+			<br>
+			<div class="inputDiv">
+				<input type="text" id="playerNameInput" placeholder="Enter the name here" />
+				<button id="submitNameButton">Continue</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="playerClassPopup" class="popup keepOpen">
+		<div class="popup-content">
+			<h2>Choose your character class</h2>
+			<br>
+			<div>
+				<button id="knightButton" class="classButton">Knight</button>
+				<button id="archerButton" class="classButton">Archer</button>
+				<button id="warriorButton" class="classButton">Warrior</button>
+				<button id="wizardButton" class="classButton">Wizard</button>
+				<button id="rogueButton" class="classButton">Rogue</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="cardsPopup" class="popup keepOpen noGlitch">
+		<div class="popup-content noGlitch">
+			<h2>You are playing Ten Cards</h2>
+			<br>
+			<div id="cardsGame" class="noGlitch"></div>
+			<button id="cardsRulesButton" class="menu">Rules</button>
+		</div>
+	</div>
+
+	<div id="cardsRulesPopup" class="popup keepOpen">
+		<div class="popup-content">
+			<h2>Rules</h2>
+			<br>
+			<p>In Ten Cards, two players take turns flipping one card at a time from a row containing cards numbered one
+				to five, arranged in random order. The number on each flipped card is added to the player's score.</p>
+			<br>
+			<p>The game concludes when all cards have been flipped, and the player with the highest score is declared
+				the winner.</p>
+			<br>
+			<p>If you're placing bets, you can win gold based on the difficulty of your opponent (x2 for easy, x3 for
+				medium, and x4 for hard). If you lose, you'll forfeit the gold you bet.</p>
+			<br>
+			<button class="closePopup">Close</button>
+		</div>
+	</div>
+
+	<div id="inventoryPopup" class="popup">
+		<div class="popup-content trade">
+			<h2 id="inventoryHeading">Inventory</h2>
+			<p id="gold"></p>
+			<br>
+			<div class="trade-container table-responsive">
+				<div class="trade-column">
+					<h2>Your Equipment</h2>
+					<br>
+					<table id="equipmentItemsList">
+						<thead>
+							<tr>
+								<th class="name" data-sort="0">Item</th>
+								<th data-sort="1">Slot</th>
+								<th data-sort="2">Attack</th>
+								<th data-sort="3">Defense</th>
+								<th data-sort="4">Weight</th>
+								<th data-sort="5">Rarity</th>
+								<th data-sort="6">Class</th>
+								<th data-sort="7">Worth</th>
+								<th class="defaultCursor">Action</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<br>
+				<div class="trade-column">
+					<h2>Your Inventory</h2>
+					<br>
+					<table id="playerInventoryList">
+						<thead>
+							<tr>
+								<th class="name" data-sort="0">Item</th>
+								<th data-sort="1">Slot</th>
+								<th data-sort="2">Attack</th>
+								<th data-sort="3">Defense</th>
+								<th data-sort="4">Weight</th>
+								<th data-sort="5">Rarity</th>
+								<th data-sort="6">Class</th>
+								<th data-sort="7">Worth</th>
+								<th class="defaultCursor">Action</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<br>
+			<button class="closePopup">Close</button>
+		</div>
+	</div>
+
+	<div id="tradePopup" class="popup">
+		<div class="popup-content trade">
+			<h2>Trade</h2>
+			<p id="gold"></p>
+			<br>
+			<div class="trade-container table-responsive">
+				<div class="trade-column">
+					<h2>Trader Inventory</h2>
+					<br>
+					<table id="sceneItemsList">
+						<thead>
+							<tr>
+								<th class="name" data-sort="0">Item</th>
+								<th data-sort="1">Slot</th>
+								<th data-sort="2">Attack</th>
+								<th data-sort="3">Defense</th>
+								<th data-sort="4">Weight</th>
+								<th data-sort="5">Rarity</th>
+								<th data-sort="6">Class</th>
+								<th data-sort="7">Worth</th>
+								<th data-sort="8">Price</th>
+								<th class="defaultCursor">Action</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<br>
+				<div class="trade-column">
+					<h2>Your Inventory</h2>
+					<br>
+					<table id="playerInventoryTradeList">
+						<thead>
+							<tr>
+								<th class="name" data-sort="0">Item</th>
+								<th data-sort="1">Slot</th>
+								<th data-sort="2">Attack</th>
+								<th data-sort="3">Defense</th>
+								<th data-sort="4">Weight</th>
+								<th data-sort="5">Rarity</th>
+								<th data-sort="6">Class</th>
+								<th data-sort="7">Worth</th>
+								<th data-sort="8">Price</th>
+								<th class="defaultCursor">Action</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+			<br>
+			<button class="closePopup">Close</button>
+		</div>
+	</div>
+
+	<div id="hireCompanionPopup" class="popup">
+		<div class="popup-content">
+			<h2>Do you want to hire this companion?</h2>
+			<br>
+			<div class="trade-container">
+				<h3 id="companionName" class="center"></h3>
+				<p id="companionDescription" class=""></p>
+			</div>
+			<br>
+			<p><strong>Note:</strong> If you already have a companion, your current companion will be replaced.</p>
+			<br>
+			<p id="companionCost" class="center"></p>
+			<br>
+			<button class="closePopup">Don't hire</button>
+			<button id="hireCompanion" class="">Hire</button>
+		</div>
+	</div>
+
+	<div id="menu" class="popup noGlitch">
+		<div class="popup-content noGlitch">
+			<h2>Menu</h2>
+			<br>
+			<button class="closePopup menu">Continue</button>
+			<br>
+			<button id="newGamePopupButton" class="menu">New Game</button>
+			<button id="downloadSaveButton" class="menu">Download Save</button>
+			<button id="uploadSaveButton" class="menu">Upload Save</button>
+			<br>
+			<a href="/timeless-tales/ten-cards">
+				<button class="menu">Play Ten Cards (Standalone)</button>
+			</a>
+			<button id="changeStyleButton" class="menu">Change Style</button>
+			<button id="updateNotesButton" class="menu">Update Notes</button>
+			<button id="numbersButton" class="menu">The Numbers</button>
+			<button class="menu openAcknolegmentPopupButton">Manage Cookies & Storage</button>
+			<a href="https://stubenvogel.com/impressum/">
+				<button class="menu">Imprint</button>
+			</a>
+			<a href="https://housebird.games/privacy-policy/">
+				<button class="menu">Privacy Policy</button>
+			</a>
+			<a href="https://housebird.games">
+				<button class="menu">Visit housebird.games</button>
+			</a>
+		</div>
+	</div>
+
+	<div id="stylePopup" class="popup">
+		<div class="popup-content">
+			<h2>Select a style</h2>
+			<br>
+			<button class="style-button menu" data-style="style.css?v=2.0.6">Ancient</button>
+			<button class="style-button menu" data-style="style-retro.css?v=2.0.6">Retro</button>
+			<button class="style-button menu" data-style="style-modern.css?v=2.0.6">Modern</button>
+			<br>
+			<br>
+			<button class="closePopup">Close</button>
+		</div>
+	</div>
+
+	<div id="newGamePopup" class="popup">
+		<div class="popup-content">
+			<h2>Are you sure? All of your progress will be deleted.</h2>
+			<br>
+			<button id="resetButton" class="menu">Confirm</button>
+			<button class="closePopup menu">Cancel</button>
+		</div>
+	</div>
+
+	<div id="numbersPopup" class="popup">
+		<div class="popup-content">
+			<h2>The Numbers</h2>
+			<br>
+			<p>Below are estimated figures for the game's content volume. Given the influence of adaptive difficulty,
+				randomness, and player-enhanced items, the game offers virtually unlimited item and enemy combinations.
+			</p>
+			<ul id="numbersList">
+				<li>Oups, something went wrong</li>
+			</ul>
+			<br>
+			<button class="closePopup menu">Close</button>
+		</div>
+	</div>
+
+	<div id="updatePopup" class="popup">
+		<div class="popup-content">
+			<div id="patchNotesButtonsContainer"></div>
+			<br>
+			<h2>Update Notes</h2>
+			<br>
+			<div id="updateContent"></div>
+			<br>
+			<p>
+				<strong>Important Note:</strong>
+				Please read what cookies & data will be stored. You will find the
+				information by clicking the button below. There you can delete the data this site stores.
+			</p>
+			<br>
+			<button class="menu openAcknolegmentPopupButton">Cookies & Storage</button>
+			<button id="updateConfirm" class="menu">Confirm</button>
+		</div>
+	</div>
+
+	<div id="storageAcknowledgementPopup" class="popup noGlitch">
+		<div class="popup-content big noGlitch">
+			<h1 class="noGlitch">Welcome to Timeless Tales!</h1>
+			<br>
+			<p class="noGlitch">Welcome! This website saves your game inside of your browsers local storage as soon you
+				click on "Enter
+				your character's name". It also uses a cookie to save your chosen style, if you change it via the menu.
+				The page also saves a cookie as soon as you press "I understand and agree" to hide this message the next
+				time you visit or reload this page. Another cookie is used to remember on which version of the site you
+				clicked "Confirm" on the Update Notes so that they are not shown on every page load. All of this is done
+				to provide the functionality of this site. If
+				you close this popup without clicking "I understand and agree", nothing will be stored. Additionally the
+				site saves to your browsers session storage if the splash screen was already shown. The session storage
+				will be deleted once you close the site.</p>
+			<br>
+			<p>Please also note that this game is experimental and will likely change and is not guaranteed to stay
+				online or to even work in the way you expect. You may need to delete your cache for future updates to
+				take effect.</p>
+			<br>
+			<button id="storageAcknowledgementButton" class="closePopup menu noGlitch">I understand and agree</button>
+			<button id="clearButton" class="menu noGlitch">Delete cookies set by this site & the savegame from local
+				storage</button>
+		</div>
+	</div>
+
+	<div id="alertPopup" class="popup">
+		<div class="popup-content">
+			<h2 id="alertPopupContent"></h2>
+			<br>
+			<button class="closePopup menu">Close</button>
+		</div>
+	</div>
+</body>
+
+</html>
